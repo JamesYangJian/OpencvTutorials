@@ -30,4 +30,30 @@ edge = cv2.Canny(img, 10, 100)
 
 plt.subplot(121), plt.imshow(img, 'gray'), plt.title('original'), plt.axis('off')
 plt.subplot(122), plt.imshow(edge, 'gray'), plt.title('Canny'), plt.axis('off')
-plt.show()
+#plt.show()
+
+
+src = np.zeros((6, 6), np.uint8)
+for i in xrange(0, 5):
+    for j in xrange(0, 5):
+        if i==j:
+            src[i,j] = 1
+
+print 'src\n %s' % src
+
+sobelx = cv2.Sobel(src, cv2.CV_64F, 1, 0, ksize=-1)
+
+print 'sobelx\n %s' %sobelx
+sobely = cv2.Sobel(src, cv2.CV_64F, 0, 1, ksize=-1)
+print 'sobely\n %s' % sobely
+
+edge_grad = np.sqrt(np.square(sobelx) + np.square(sobely))
+
+print 'edge_grad:\n%s' % (edge_grad)
+
+theta = np.arctan2(np.absolute(sobely), np.absolute(sobelx))
+
+print 'theta:\n%s' % (theta)
+
+edge = cv2.Canny(src, 0, 10000)
+print 'Canny:\n%s' % (edge)
